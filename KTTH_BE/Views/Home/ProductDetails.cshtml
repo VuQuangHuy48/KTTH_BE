@@ -1,0 +1,24 @@
+﻿@model KTTH_BE.Models.ViewModel.ProductDetailsVM
+@{ ViewBag.Title = "Chi tiết sản phẩm"; }
+
+<div class="row" style="margin-top:20px;">
+    <div class="col-md-4">
+        <img src="@Url.Content(Model.product.ProductImage ?? "~/Content/images/default_img.png")" class="img-responsive" />
+    </div>
+    <div class="col-md-5">
+        <h3>@Model.product.ProductName</h3>
+        <h4 class="text-danger">@Model.product.ProductPrice.ToString("N0") VNĐ</h4>
+        <p>Danh mục: @Model.product.Category.CategoryName</p>
+        <hr />
+        <p>@Model.product.ProductDescription</p>
+    </div>
+    <div class="col-md-3 well">
+        @using (Html.BeginForm("AddToCart", "Cart", FormMethod.Get))
+        {
+            <input type="hidden" name="id" value="@Model.product.ProductID" />
+            <label>Số lượng:</label>
+            <input type="number" name="quantity" value="@Model.quantity" min="1" class="form-control" style="margin-bottom:10px;" />
+            <button type="submit" class="btn btn-info btn-block">Thêm vào giỏ hàng</button>
+        }
+    </div>
+</div>

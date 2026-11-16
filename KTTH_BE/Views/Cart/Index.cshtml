@@ -1,0 +1,42 @@
+﻿@model KTTH_BE.Models.ViewModel.Cart
+@using System.Linq;
+@{ ViewBag.Title = "Giỏ hàng"; }
+
+<h2>GIỎ HÀNG</h2>
+@if (!Model.Items.Any())
+{
+    <p>Bạn chưa có sản phẩm nào trong giỏ.</p>
+    @Html.ActionLink("Tiếp tục mua hàng", "Index", "Home", null, new { @class = "btn btn-warning" })
+}
+else
+{
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table table-bordered">
+                <tr><th>Sản phẩm</th><th>Số lượng</th><th>Đơn giá</th><th>Thành tiền</th><th>@Html.ActionLink("Xóa hết", "ClearCart")</th></tr>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td>
+                            @using (Html.BeginForm("UpdateQuantity", "Cart", FormMethod.Post))
+                            {
+                                <input type="hidden" name="id" value="@item.ProductID" />
+                                <input type="number" name="quantity" value="@item.Quantity" min="1" style="width:60px;" />
+                                <button type="submit" class="btn btn-xs btn-default">Cập nhật</button>
+                            }
+                        </td>
+                        <td>@item.UnitPrice.ToString("N0")</td>
+                        <td>@item.TotalPrice.ToString("N0")</td>
+                        <td>@Html.ActionLink("Xóa", "RemoveFromCart", new { id = item.ProductID }, new { @class = "btn btn-danger btn-xs" })</td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div class="col-md-4 well">
+            <h4>Tổng giá trị: <span class="text-danger">@Model.TotalValue().ToString("N0") VNĐ</span></h4>
+            @Html.ActionLink("Mua hàng", "Checkout", "Order", null, new { @class = "btn btn-danger btn-block" })
+            @Html.ActionLink("Tiếp tục mua hàng", "Index", "Home", null, new { @class = "btn btn-warning btn-block" })
+        </div>
+    </div>
+}

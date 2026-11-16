@@ -1,0 +1,9 @@
+﻿@model KTTH_BE.Models.Order
+@{ ViewBag.Title = "Xác nhận đơn hàng"; }
+
+<h2 class="text-success">ĐẶT HÀNG THÀNH CÔNG!</h2>
+<p><b>Mã đơn hàng:</b> #@Model.OrderID</p>
+<p><b>Ngày đặt:</b> @Model.OrderDate</p>
+<p><b>Địa chỉ nhận:</b> @Model.ShippingAddress</p>
+<p><b>Tổng tiền:</b> @Model.TotalAmount.ToString("N0") VNĐ</p>
+@Html.ActionLink("Về trang chủ", "Index", "Home", null, new { @class = "btn btn-primary" })

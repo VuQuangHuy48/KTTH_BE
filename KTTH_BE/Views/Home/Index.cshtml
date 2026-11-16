@@ -1,0 +1,49 @@
+﻿@model KTTH_BE.Models.ViewModel.HomeProductVM
+@using PagedList.Mvc;
+@{ ViewBag.Title = "Trang chủ"; }
+
+<div class="jumbotron text-center">
+    <h2>Chào mừng đến trang web E-commerce</h2>
+    @using (Html.BeginForm("Index", "Home", FormMethod.Get, new { @class = "form-inline" }))
+    {
+        @Html.TextBoxFor(m => m.SearchTerm, new { @class = "form-control", placeholder = "Nhập tên sản phẩm...", style = "width:300px;" })
+        <button type="submit" class="btn btn-danger">Tìm kiếm</button>
+    }
+</div>
+
+<h3>Sản phẩm nổi bật</h3>
+<div class="row">
+    @foreach (var item in Model.FeaturedProducts)
+    {
+        <div class="col-md-3" style="margin-bottom:20px;">
+            <div class="thumbnail">
+                <a href="@Url.Action("ProductDetails", "Home", new { id = item.ProductID })">
+                    <img src="@Url.Content(item.ProductImage ?? "~/Content/images/default_img.png")" style="height:180px;" />
+                </a>
+                <div class="caption">
+                    <h5>@item.ProductName</h5>
+                    <p class="text-danger"><b>@item.ProductPrice.ToString("N0") đ</b></p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<h3>Sản phẩm mới</h3>
+<div class="row">
+    @foreach (var item in Model.NewProducts)
+    {
+        <div class="col-md-2" style="margin-bottom:20px;">
+            <div class="thumbnail">
+                <a href="@Url.Action("ProductDetails", "Home", new { id = item.ProductID })">
+                    <img src="@Url.Content(item.ProductImage ?? "~/Content/images/default_img.png")" style="height:120px;" />
+                </a>
+                <div class="caption">
+                    <h6>@item.ProductName</h6>
+                    <p class="text-primary">@item.ProductPrice.ToString("N0") đ</p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@Html.PagedListPager(Model.NewProducts, page => Url.Action("Index", new { page, searchTerm = Model.SearchTerm }))
